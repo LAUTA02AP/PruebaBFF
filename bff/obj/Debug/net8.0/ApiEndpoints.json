@@ -1,0 +1,112 @@
+[
+  {
+    "ContainingType": "Bff.Controllers.BffAuthController",
+    "Method": "Login",
+    "RelativePath": "bff/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "Bff.Controllers.BffAuthController\u002BLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Bff.Controllers.BffAuthController",
+    "Method": "Logout",
+    "RelativePath": "bff/logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Bff.Controllers.BffSistemaController",
+    "Method": "GetCliente",
+    "RelativePath": "bff/sistema/cliente",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dni",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Bff.Controllers.BffSistemaController",
+    "Method": "GetClientesPorVendedor",
+    "RelativePath": "bff/sistema/clientes-vendedor",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Bff.Controllers.BffSistemaController",
+    "Method": "GetDetallePedido",
+    "RelativePath": "bff/sistema/detalle-pedido",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPedido",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Bff.Controllers.BffSistemaController",
+    "Method": "GetPedidos",
+    "RelativePath": "bff/sistema/pedidos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dni",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Bff.Controllers.BffSistemaController",
+    "Method": "GetSaldoCliente",
+    "RelativePath": "bff/sistema/saldo-cliente",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dni",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Bff.Controllers.BffAuthController",
+    "Method": "GetUser",
+    "RelativePath": "bff/user",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

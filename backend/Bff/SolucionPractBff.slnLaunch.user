@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "SolucionPractBff.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "..\\..\\bff\\bff.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
