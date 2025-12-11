@@ -159,6 +159,18 @@
           }
         }
       }
+    },
+    "/bff/sistema/productos": {
+      "get": {
+        "tags": [
+          "BffSistema"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

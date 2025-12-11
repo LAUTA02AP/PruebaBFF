@@ -1,45 +1,37 @@
+// src/components/ProtectedRoute.jsx
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { getUserInfo } from "../api/Services";
 
 function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true);
-  const [authorized, setAuthorized] = useState(false);
+  const [estaAutenticado, setEstaAutenticado] = useState(false);
 
   useEffect(() => {
-    async function validarSesion() {
+    async function verificarSesion() {
       try {
-        //Consultar al BFF si hay usuario 
-        const data = await getUserInfo();
-
-        //Si responde OK → hay sesión válida
-        setAuthorized(true);
-
+        await getUserInfo(); // si responde OK, hay sesión
+        setEstaAutenticado(true);
       } catch (err) {
-        //  Si falla (401), no hay login → bloquear
-        setAuthorized(false);
-
-        // limpiar marca local del front
-        localStorage.removeItem("username");
-        localStorage.removeItem("rol");
+        console.error("Error verificando sesión en ProtectedRoute:", err);
+        setEstaAutenticado(false);
       } finally {
         setLoading(false);
       }
     }
 
-    validarSesion();
+    verificarSesion();
   }, []);
 
-  // Evita parpadeos mientras valida
-  if (loading) return <div>Cargando...</div>;
+  if (loading) {
+    return <p className="loading-text">Verificando sesión...</p>;
+  }
 
-  //  No autorizado → forzar login SIEMPRE
-  if (!authorized) return <Navigate to="/" replace />;
+  if (!estaAutenticado) {
+    return <Navigate to="/" replace />;
+  }
 
-  //  Autorizado → mostrar la ruta
   return children;
 }
 
 export default ProtectedRoute;
-
-

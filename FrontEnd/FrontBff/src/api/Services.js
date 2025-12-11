@@ -73,3 +73,8 @@ export const getDetallePedido = async (idPedido) => {
   });
   return res.data;
 };
+
+export const getProductos = async () => {
+  const res = await API.get("/sistema/productos");
+  return res.data; // array de productos
+};

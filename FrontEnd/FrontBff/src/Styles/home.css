@@ -1,271 +1,150 @@
-/* =================================================================== */
-/*  VARIABLES GLOBALES                                                 */
-/* =================================================================== */
-:root {
-  --bg-body: #050816;
-  --bg-card: #0b1220;
-  --bg-card-soft: #0f172a;
-  --accent: #38bdf8;
-  --accent-soft: rgba(56, 189, 248, 0.15);
-  --accent-strong: #0ea5e9;
-  --danger: #ef4444;
-  --success: #22c55e;
-  --text-main: #e5e7eb;
-  --text-muted: #9ca3af;
-  --border-subtle: #1f2937;
-  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
-  --radius-xl: 18px;
-  --radius-full: 999px;
-  --transition-fast: 0.2s ease-out;
-  --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-}
-
-/* =================================================================== */
-/*  RESETEO                                                            */
-/* =================================================================== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: var(--font-main);
-  background: radial-gradient(circle at top, #1d283a 0, #020617 60%, #000 100%);
-  color: var(--text-main);
-}
-
-/* =================================================================== */
-/*  CONTENEDOR PRINCIPAL                                               */
-/* =================================================================== */
 .home-container {
-  max-width: 1120px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 3rem;
+  padding: 1.25rem 0 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
-/* =================================================================== */
-/*  LOADING                                                            */
-/* =================================================================== */
-.loading {
-  text-align: center;
-  font-size: 1.1rem;
-  margin-top: 2.5rem;
-  color: var(--text-muted);
-}
-
-/* =================================================================== */
-/*  CLIENTE – TARJETA DE SALDO                                         */
-/* =================================================================== */
-.section1 {
-  background: linear-gradient(135deg, var(--bg-card) 0%, #020617 100%);
-  border-radius: var(--radius-xl);
-  padding: 2rem 1.75rem;
+/* Cliente (rol 0) */
+.section1,
+.section2 {
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
   box-shadow: var(--shadow-soft);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  margin-bottom: 2rem;
-  position: relative;
-  overflow: hidden;
+  padding: 1.4rem 1.6rem;
 }
 
-.section1::before,
-.section1::after {
-  content: "";
-  position: absolute;
-  border-radius: 999px;
-  filter: blur(28px);
-  opacity: 0.32;
-  pointer-events: none;
-}
-
-.section1::before {
-  width: 270px;
-  height: 270px;
-  background: radial-gradient(circle, var(--accent) 0%, transparent 60%);
-  top: -80px;
-  right: -80px;
-}
-
-.section1::after {
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 65%);
-  bottom: -70px;
-  left: -70px;
+.section1 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .section1 h2 {
-  margin: 0 0 0.75rem;
-  font-size: clamp(1.4rem, 2vw + 0.8rem, 1.9rem);
+  font-size: 1.4rem;
+  margin: 0;
 }
 
 .cliente-nombre {
-  color: var(--accent-strong);
-  font-weight: 700;
+  color: var(--color-primary);
 }
 
 .saldo-principal {
-  margin: 0.35rem 0 1rem;
-  font-size: 1.05rem;
-  color: var(--text-muted);
+  margin: 0.3rem 0 0.8rem;
+  font-size: 1rem;
+  color: var(--color-text-muted);
 }
 
 .saldo-monto {
-  font-size: clamp(1.6rem, 2.1vw + 1rem, 2.1rem);
-  font-weight: 700;
-  color: var(--accent);
-  padding: 0.25rem 1.1rem;
-  border-radius: var(--radius-full);
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(56, 189, 248, 0.5);
-  box-shadow: 0 12px 35px rgba(56, 189, 248, 0.2);
-}
-
-.saldo-detalle {
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.saldo-detalle strong {
-  color: var(--text-main);
-}
-
-/* =================================================================== */
-/*  VENDEDOR – TABLA                                                   */
-/* =================================================================== */
-.clientes-table-home {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1.5rem;
-  background-color: #020617;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  box-shadow: var(--shadow-soft);
-}
-
-.clientes-table-home thead {
-  background: linear-gradient(
-    90deg,
-    rgba(56, 189, 248, 0.18),
-    rgba(59, 130, 246, 0.18)
-  );
-}
-
-.clientes-table-home th {
-  padding: 0.85rem 1.1rem;
-  font-size: 0.88rem;
-  text-transform: uppercase;
-  color: #e5e7eb;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid rgba(31, 41, 55, 0.8);
-}
-
-.clientes-table-home td {
-  padding: 0.8rem 1.1rem;
-  font-size: 0.92rem;
-  color: var(--text-main);
-}
-
-.clientes-table-home tbody tr {
-  border-bottom: 1px solid rgba(31, 41, 55, 0.8);
-  transition: background-color 0.15s ease-out, transform 0.1s ease-out;
-}
-
-.clientes-table-home tbody tr:hover {
-  background-color: rgba(37, 99, 235, 0.25);
-  transform: translateY(-2px);
-}
-
-/* columna saldo */
-.clientes-table-home td:nth-child(3) {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.8rem;
+  border-radius: var(--radius-pill);
+  background: rgba(200, 247, 42, 0.18);
+  color: #3f6212;
   font-weight: 600;
-  color: var(--accent);
 }
 
-/* =================================================================== */
-/*  BOTON VER PEDIDOS                                                  */
-/* =================================================================== */
+
+/* No tenemos composes en CSS puro, así que: */
 .btn-ver-pedidos {
-  border: none;
-  padding: 0.4rem 0.9rem;
-  border-radius: var(--radius-full);
-  font-size: 0.86rem;
-  cursor: pointer;
-  background: linear-gradient(135deg, var(--accent-strong), #4f46e5);
-  color: #f9fafb;
+  background: var(--color-primary);
+  color: var(--color-surface);
+  border-radius: var(--radius-pill);
+  padding: 0.55rem 1.25rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
-  transition: 0.2s;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s ease, box-shadow 0.18s ease,
+    transform 0.1s ease;
+  box-shadow: 0 8px 18px rgba(0, 96, 170, 0.4);
 }
 
 .btn-ver-pedidos:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(59, 130, 246, 0.5);
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 84, 149, 0.5);
 }
 
-/* =================================================================== */
-/*  BOTÓN CERRAR SESIÓN                                                */
-/* =================================================================== */
+/* Section2 info */
+.section2 h1 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.section2 p {
+  margin-top: 0.4rem;
+  color: var(--color-text-muted);
+}
+
+/* Botón logout */
 .btn-logout {
-  margin-top: 1.5rem;
-  background: #ef4444;
-  border: none;
-  color: white;
-  padding: 0.55rem 1.1rem;
-  border-radius: var(--radius-full);
-  font-size: 0.9rem;
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  background: transparent;
+  color: var(--color-text-muted);
+  border-radius: var(--radius-pill);
+  padding: 0.45rem 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.65);
   cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-logout:hover {
-  background: #dc2626;
-  transform: translateY(-2px);
+  background: rgba(148, 163, 184, 0.08);
 }
 
-/* =================================================================== */
-/*  RESPONSIVE                                                         */
-/* =================================================================== */
-@media (max-width: 768px) {
-  .clientes-table-home thead {
-    display: none;
+/* Vendedor (rol 1) */
+
+.clientes-table-home {
+  margin-top: 0.8rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.clientes-table-home table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.clientes-table-home thead th {
+  background: #edf5ff;
+}
+
+.clientes-table-home tbody tr:hover {
+  background: rgba(219, 234, 254, 0.6);
+}
+
+.clientes-table-home td,
+.clientes-table-home th {
+  padding: 0.7rem 0.9rem;
+}
+
+@media (min-width: 900px) {
+  .home-container {
+    display: grid;
+    grid-template-columns: 2.2fr 1.3fr;
+    column-gap: 1.3rem;
+    row-gap: 1.3rem;
   }
 
-  .clientes-table-home,
-  .clientes-table-home tbody,
-  .clientes-table-home tr,
-  .clientes-table-home td {
-    display: block;
-    width: 100%;
+  .section1 {
+    grid-column: 1 / 2;
   }
 
-  .clientes-table-home tr {
-    background-color: rgba(15, 23, 42, 0.95);
-    margin-bottom: 0.9rem;
-    border-radius: 14px;
-    overflow: hidden;
-    padding: 0.7rem 0.9rem;
+  .section2 {
+    grid-column: 2 / 3;
+    height: fit-content;
   }
 
-  .clientes-table-home td {
-    padding: 0.55rem 0.6rem;
-    border-bottom: 1px solid rgba(31, 41, 55, 0.7);
-  }
-
-  .clientes-table-home td:last-child {
-    border-bottom: none;
-  }
-
-  .clientes-table-home td::before {
-    content: attr(data-label);
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    display: block;
-    text-transform: uppercase;
-    margin-bottom: 0.2rem;
+  .btn-logout {
+    grid-column: 1 / 3;
   }
 }

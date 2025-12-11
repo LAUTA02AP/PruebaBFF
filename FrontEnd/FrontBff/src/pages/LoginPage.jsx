@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api/Services.js";
 import "../styles/login.css";
@@ -11,81 +11,85 @@ function LoginPage() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
-
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
     try {
-      // LOGIN en el BFF
-      const data = await loginUser(usuario, clave);
+      // LOGIN contra el BFF
+      // El BFF debería setear la cookie HttpOnly de sesión
+      await loginUser(usuario, clave);
 
-      // Guardamos SOLO datos no sensibles
-      localStorage.setItem("username", data.usuario);
-      localStorage.setItem("rol", data.rol);
+      // IMPORTANTE:
+      // No guardamos nada sensible en localStorage.
+      // Luego, HomePage y Sidebar usan getUserInfo() para saber rol, dni, etc.
 
-      // Evitar guardar null → causa NaN
-      localStorage.setItem("dni", data.dni ?? "");
-      localStorage.setItem("idVendedor", data.idVendedor ?? "");
-
+      // De momento TODOS los roles van a /home
       navigate("/home");
-
     } catch (err) {
       console.error("Error en login:", err);
 
       if (err.response?.status === 401) {
-        setError("Usuario o contraseña incorrectos.");
+        setError("Usuario o contraseña incorrectos");
       } else {
-        setError("Ocurrió un error al iniciar sesión.");
+        setError("Ocurrió un error al iniciar sesión");
       }
-
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-
-        <div className="login-header">
-          <h1>Iniciar Sesión</h1>
-          <p>Ingresa tus credenciales para continuar</p>
-        </div>
-
+    <div className="login-page">
+      <div className="login-container">
         <form className="login-form" onSubmit={handleSubmit}>
+          <div className="login-logo">
+            <span className="login-logo-icon">Logo</span>
+          </div>
 
-          <div className="form-group">
-            <label>Usuario</label>
+          <h1 className="login-title">Gestor</h1>
+          <p className="login-subtitle">
+            Iniciá sesión con tu usuario
+          </p>
+
+          <div className="input-group">
+            <label className="input-labelLog">Usuario</label>
             <input
               type="text"
+              placeholder="Ingresá tu usuario"
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
-              placeholder="Ingresa tu usuario"
               required
+              className="login-input"
             />
           </div>
 
-          <div className="form-group">
-            <label>Contraseña</label>
+          <div className="input-group">
+            <label className="input-labelLog">Contraseña</label>
             <input
               type="password"
+              placeholder="Ingresá tu contraseña"
               value={clave}
               onChange={(e) => setClave(e.target.value)}
-              placeholder="Ingresa tu contraseña"
               required
+              className="login-input"
             />
           </div>
 
-          {error && <div className="error-message">{error}</div>}
-
-          <button type="submit" className="btn-submit" disabled={isLoading}>
-            {isLoading ? "Ingresando..." : "Iniciar Sesión"}
+          <button
+            type="submit"
+            className="login-button"
+            disabled={isLoading}
+          >
+            {isLoading ? "Ingresando..." : "Ingresar"}
           </button>
+
+          {error && <p className="login-error">{error}</p>}
+
+          <p className="login-footnote">
+            Acceso restringido · Uso interno
+          </p>
         </form>
       </div>
     </div>

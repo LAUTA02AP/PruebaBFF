@@ -96,6 +96,16 @@
   },
   {
     "ContainingType": "WebApplication1.Controllers.SistemaController",
+    "Method": "GetProductos",
+    "RelativePath": "sistema/productos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApplication1.Controllers.SistemaController",
     "Method": "GetSaldoCliente",
     "RelativePath": "sistema/saldo-cliente",
     "HttpMethod": "GET",

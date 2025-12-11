@@ -216,5 +216,28 @@ namespace WebApplication1.Controllers
             return Ok(data);
         }
 
+        // ================================================
+        // OBTENER PRODUCTOS
+        // ================================================
+        
+        [HttpGet("productos")]
+        public async Task<IActionResult> GetProductos()
+        {
+            try
+            {
+                var sql = @"SELECT Id, Descripcion, Precio FROM Productos";
+
+                // Usamos tu SqlHelper con dynamic
+                var productos = await _db.QueryAsync<dynamic>(sql);
+
+                return Ok(productos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+
     }
 }

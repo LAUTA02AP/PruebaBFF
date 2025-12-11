@@ -1,56 +1,44 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getUserInfo,
   getSaldoCliente,
-  getClientesVendedor,
-  logoutUser
-} from "../api/Services";
-import { useNavigate } from "react-router-dom";
-import "../styles/Home.css";
-
+  getClientesVendedor
+} from "../api/Services"; // mismo servicio que usabas en el BFF
+import "../styles/Generales/pages.css"; // mismo CSS que el Home viejo
+import "../styles/Generales/Table.css"; 
 function HomePage() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
   const [nombre, setNombre] = useState("");
   const [saldo, setSaldo] = useState(0);
+  const [totalPedidos, setTotalPedidos] = useState(0);
+  const [totalCobros, setTotalCobros] = useState(0);
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  
-  // - Llama al BFF para limpiar la cookie HttpOnly (logout real)
-  // - Limpia localStorage (UI)
-  // - Redirige al login
-
-  const cerrarSesion = async () => {
-    try {
-      await logoutUser();
-      localStorage.clear();
-      navigate("/", { replace: true });
-    } catch (err) {
-      console.error("Error en logout:", err);
-    }
-  };
-
-
-  // Cargar datos del usuario al entrar a Home
-  // - Llama al BFF → obtiene username, rol, dni
-  // - Según rol, carga saldo o lista de clientes
-  //
-  // NOTA: Ya NO guardamos DNI ni rol en localStorage,
-  // todo viene del BFF y del state (user)
-  // ----------------------------------------------------------
   useEffect(() => {
     async function cargar() {
       try {
+        // Traemos info del usuario desde el BFF (cookie de sesión)
         const data = await getUserInfo();
         setUser(data);
 
         // CLIENTE (ROL 0)
         if (data.rol === 0) {
           const saldoData = await getSaldoCliente(data.dni);
-          setNombre(saldoData.nombre);
-          setSaldo(Number(saldoData.saldo ?? 0));
+
+          const totalPed = Number(saldoData.totalPedidos ?? 0);
+          const totalCob = Number(saldoData.totalCobros ?? 0);
+          const saldoCalculado = Number(
+            saldoData.saldo ?? (totalPed - totalCob)
+          );
+
+          setNombre(saldoData.nombre ?? data.username ?? "Cliente");
+          setTotalPedidos(totalPed);
+          setTotalCobros(totalCob);
+          setSaldo(saldoCalculado);
         }
 
         // VENDEDOR (ROL 1)
@@ -58,108 +46,134 @@ function HomePage() {
           const lista = await getClientesVendedor();
           setClientes(lista);
         }
-
       } catch (err) {
         console.error("Error cargando Home:", err);
-
-        // Si GetUserInfo da 401 → cookie inválida → volver al login
+        // Si no hay sesión/cookie → volvemos al login
         navigate("/", { replace: true });
-
       } finally {
         setLoading(false);
       }
     }
 
     cargar();
-  }, []);
+  }, [navigate]);
 
-  if (loading || !user) return <p>Cargando...</p>;
+  if (loading) {
+    return <p className="loading-text">Cargando...</p>;
+  }
 
-  // ===============================================
+  if (!user) {
+    return null;
+  }
+
+  // ============================
   // CLIENTE (rol 0)
-  // ===============================================
+  // ============================
   if (user.rol === 0) {
     return (
-      <div className="home-container">
-
+      <div>
         <section className="section1">
           <h2>
-            Bienvenido <span className="cliente-nombre">{nombre}</span>
+            Bienvenido, <span className="cliente-nombre">{nombre}</span>
+            <br />
+            Tu saldo total de pedidos es:{" "}
+            <span className="saldo-monto">${saldo.toFixed(2)}</span>
           </h2>
 
-          <p className="saldo-principal">
-            Tu saldo actual es:{" "}
-            <span className="saldo-monto">${saldo.toFixed(2)}</span>
+          <p className="saldo-detalle">
+            <strong>Total de pedidos:</strong> ${totalPedidos.toFixed(2)} <br />
+            <strong>Total abonado:</strong> ${totalCobros.toFixed(2)}
           </p>
-
-          {/* Botón MIS PEDIDOS */}
-          <button
-            className="btn-ver-pedidos"
-            onClick={() => navigate(`/pedidos/${user.dni}`)}
-          >
-            Ver mis pedidos
-          </button>
         </section>
 
         <section className="section2">
           <h1>Sobre Nosotros</h1>
-          <p>Información general...</p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+          </p>
         </section>
 
-        <button className="btn-logout" onClick={cerrarSesion}>
-          Cerrar Sesión
-        </button>
+        <section className="section3">
+          <h2>DESTACADOS</h2>
+          <p>Productos en oferta - Aprovechá nuestras mejores promociones</p>
+        </section>
+
+        <section className="Contacto">
+          <h2>Contacto</h2>
+          <p>📞 Teléfono: +54 9 351 123-4567</p>
+          <p>✉️ Email: contacto@ejemplo.com</p>
+        </section>
       </div>
     );
   }
 
-  // ===============================================
+  // ============================
   // VENDEDOR (rol 1)
-  // ===============================================
-  return (
-    <div className="home-container">
-      <h2>Bienvenido Vendedor: {user.username}</h2>
-      <h3>Clientes asignados</h3>
+  // ============================
+  // ============================
+// VENDEDOR (rol 1)
+// ============================
+return (
+  <div>
+    <section className="section1">
+      <h2>
+        Bienvenido,{" "}
+        <span className="cliente-nombre">{user.username}</span>
+      </h2>
+      <p className="saldo-detalle">
+        Aquí podés ver el listado de tus clientes y acceder a sus pedidos.
+      </p>
+    </section>
+
+    <section className="section2">
+      <h1>Clientes asignados</h1>
 
       {clientes.length === 0 ? (
         <p>No tienes clientes asignados.</p>
       ) : (
-        <table className="clientes-table-home">
-          <thead>
-            <tr>
-              <th>DNI</th>
-              <th>Nombre</th>
-              <th>Saldo</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
+        // 👉 CARD de tabla reutilizando Table.css
+        <div className="table-card">
+          <div className="table-wrapper">
+            <table className="table clientes-table">
+              <thead>
+                <tr>
+                  <th>DNI</th>
+                  <th>Nombre</th>
+                  <th className="text-right">Saldo</th>
+                  <th className="text-center">Acción</th>
+                </tr>
+              </thead>
 
-          <tbody>
-            {clientes.map((c) => (
-              <tr key={c.dni}>
-                <td>{c.dni}</td>
-                <td>{c.nombre}</td>
-                <td>${Number(c.saldo).toFixed(2)}</td>
-
-                <td>
-                  <button
-                    className="btn-ver-pedidos"
-                    onClick={() => navigate(`/pedidos/${c.dni}`)}
-                  >
-                    Ver pedidos
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              <tbody>
+                {clientes.map((c) => (
+                  <tr key={c.dni}>
+                    <td>{c.dni}</td>
+                    <td>{c.nombre}</td>
+                    <td className="text-right">
+                      ${Number(c.saldo ?? 0).toFixed(2)}
+                    </td>
+                    <td className="table-actions text-center">
+                      <button
+                        className="btn-table btn-table-primary"
+                        onClick={() => navigate(`/pedidos/${c.dni}`)}
+                      >
+                        Ver pedidos
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
+    </section>
+  </div>
+);
 
-      <button className="btn-logout" onClick={cerrarSesion}>
-        Cerrar Sesión
-      </button>
-    </div>
-  );
 }
 
 export default HomePage;

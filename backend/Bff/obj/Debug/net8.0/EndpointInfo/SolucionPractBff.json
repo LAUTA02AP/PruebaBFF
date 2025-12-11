@@ -169,6 +169,18 @@
           }
         }
       }
+    },
+    "/sistema/productos": {
+      "get": {
+        "tags": [
+          "Sistema"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

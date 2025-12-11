@@ -1,0 +1,366 @@
+/* ==========================================
+   PÁGINAS CON TABLA (LAYOUT GENERAL)
+   ========================================== */
+
+/* Contenedor general de una página que muestra tablas */
+.table-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* separación entre header y card de tabla */
+}
+
+/* Cabecera superior de la página de tabla:
+   flecha volver + título + subtítulo */
+.table-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+/* Lado izquierdo: botón volver + bloque de textos */
+.table-page-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Título principal (ej: "Mis pedidos") */
+.table-page-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-blue);
+}
+
+/* Subtítulo (ej: DNI, info extra) */
+.table-page-subtitle {
+  font-size: 13px;
+  color: var(--text-gray);
+}
+
+/* Lado derecho por si querés acciones extras más adelante */
+.table-page-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================
+   CARD QUE ENVUELVE TOOLBAR + TABLA
+   ========================================== */
+
+.table-card {
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  padding: 14px 16px 16px 16px;
+}
+
+/* Barra superior de acciones encima de la tabla */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Lado izquierdo (por ejemplo, buscador o filtros) */
+.table-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Lado derecho (exportar, botones) */
+.table-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Wrapper de tabla: scroll horizontal en caso de muchas columnas */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 10px; /* separa toolbar de la tabla */
+}
+
+/* ==========================================
+   TABLAS GENERALES
+   ========================================== */
+
+/* Tabla base para todo el proyecto */
+.table {
+  width: 100%;
+  border-collapse: collapse;           /* sin espacios entre celdas */
+  font-size: 14px;
+  background-color: var(--bg-card);    /* mismo fondo que las cards */
+
+  border-radius: 8px;                  /* esquinas suaves */
+  box-shadow: var(--shadow-sm);        /* sombra muy leve */
+  overflow: hidden;                    /* respeta el border-radius */
+}
+
+/* Encabezado de la tabla */
+.table thead {
+  background-color: #EEF2F7;           /* gris muy claro */
+}
+
+.table th {
+  padding: 10px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-dark);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  white-space: nowrap;                 /* evita cortes raros */
+}
+
+/* Celdas del cuerpo */
+.table td {
+  padding: 9px 16px;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-dark);
+  font-size: 13px;
+}
+
+/* Filas alternadas (zebra) – estilo sobrio */
+.table tbody tr:nth-child(even) {
+  background-color: #F9FAFB;
+}
+
+/* Hover suave sobre la fila */
+.table tbody tr:hover {
+  background-color: var(--light-blue);
+}
+
+/* Alineaciones rápidas */
+.table .text-right {
+  text-align: right;
+}
+
+.table .text-center {
+  text-align: center;
+}
+
+/* Columna de acciones (botones editar, ver, etc.) */
+.table .table-actions {
+  white-space: nowrap;   /* que los botones no se corten de línea */
+}
+
+/* Botones dentro de tablas (más chiquitos que los globales) */
+.table .btn-table {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+/* Ejemplo de botón principal dentro de tabla */
+.table .btn-table-primary {
+  background-color: var(--primary-blue);
+  color: var(--primary-white);
+  border: none;
+  cursor: pointer;
+}
+
+.table .btn-table-primary:hover {
+  background-color: var(--dark-blue);
+}
+
+/* Tabla más compacta (para muchas filas) */
+.table--compact th,
+.table--compact td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* Tabla sin sombra (si la necesitás en algún lado especial) */
+.table--flat {
+  box-shadow: none;
+  border: 1px solid var(--border-color);
+}
+
+/* ==========================================
+   BOTÓN EXPORTAR / DESCARGAR
+   ========================================== */
+
+/* Botón tipo "Export attendance" de la referencia */
+.btn-table-export {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 8px 16px;
+  border-radius: 999px;
+
+  border: 1px solid var(--primary-blue);
+  background-color: #ffffff;
+  color: var(--primary-blue);
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Icono dentro del botón (ej: flecha abajo) */
+.btn-table-export-icon {
+  font-size: 14px;
+}
+
+/* Hover / active */
+.btn-table-export:hover {
+  background-color: var(--light-blue);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.btn-table-export:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ==========================================
+   BUSCADOR EN TOOLBAR
+   ========================================== */
+
+.table-search-wrapper {
+  position: relative;
+  min-width: 220px;
+}
+
+.table-search-input {
+  width: 100%;
+  padding: 8px 12px;
+  padding-left: 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  font-size: 13px;
+  background-color: #ffffff;
+}
+
+.table-search-input::placeholder {
+  color: var(--text-gray);
+  font-size: 12px;
+}
+
+.table-search-input:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 2px rgba(0, 96, 170, 0.15);
+}
+
+/* Cantidad mostrada (ej: "Mostrando 1-15 de 200") */
+.table-count {
+  font-size: 12px;
+  color: var(--text-gray);
+}
+
+/* ==========================================
+   PAGINACIÓN
+   ========================================== */
+
+.table-pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-gray);
+}
+
+.table-pagination-button {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.table-pagination-button:hover:not(:disabled) {
+  background-color: var(--light-blue);
+}
+
+.table-pagination-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.table-pagination-info {
+  font-size: 12px;
+  color: var(--text-gray);
+}
+
+
+/* ==========================================
+   BOTÓN VOLVER (USADO EN PÁGINAS DE TABLA)
+   ========================================== */
+
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+/* Icono de la flecha */
+.icono-volver {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* Hover y active del botón volver */
+.btn-volver:hover {
+  background-color: var(--light-blue);
+  border-color: var(--primary-blue);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-volver:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+  .table {
+    min-width: 600px;  /* fuerza scroll horizontal si hay muchas columnas */
+  }
+
+  .table-card {
+    padding: 10px 10px 12px 10px;
+  }
+
+  .table-page-title {
+    font-size: 16px;
+  }
+
+  .table-page-subtitle {
+    font-size: 12px;
+  }
+}

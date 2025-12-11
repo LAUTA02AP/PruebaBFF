@@ -149,7 +149,7 @@ namespace Bff.Controllers
 
 
         // ======================================
-        // GET Detalle
+        // GET Detallle pedido 
         // ======================================
         [HttpGet("detalle-pedido")]
         public async Task<IActionResult> GetDetallePedido(int idPedido)
@@ -178,6 +178,23 @@ namespace Bff.Controllers
 
             return await Passthrough(await client.GetAsync(url));
         }
+
+        [HttpGet("productos")]
+        public async Task<IActionResult> GetProductos()
+        {
+            var session = GetSession();
+            if (session == null)
+                return Unauthorized();
+
+            var client = CreateClient(session);
+
+            // Llamado a la API : GET /sistema/productos
+            var url = "/sistema/productos";
+
+            var apiResponse = await client.GetAsync(url);
+            return await Passthrough(apiResponse);
+        }
+
     }
 }
 

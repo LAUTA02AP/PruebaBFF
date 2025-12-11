@@ -85,6 +85,16 @@
   },
   {
     "ContainingType": "Bff.Controllers.BffSistemaController",
+    "Method": "GetProductos",
+    "RelativePath": "bff/sistema/productos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Bff.Controllers.BffSistemaController",
     "Method": "GetSaldoCliente",
     "RelativePath": "bff/sistema/saldo-cliente",
     "HttpMethod": "GET",
