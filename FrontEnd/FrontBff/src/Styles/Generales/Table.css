@@ -347,20 +347,178 @@
    RESPONSIVE
    ========================================== */
 
-@media (max-width: 768px) {
-  .table {
-    min-width: 600px;  /* fuerza scroll horizontal si hay muchas columnas */
+/* ==========================================
+   RESPONSIVE (TABLET + MOBILE)
+   ========================================== */
+
+/* ---------- TABLET (hasta ~1024px) ---------- */
+@media (max-width: 1024px) {
+  .table-card {
+    padding: 12px;
   }
 
-  .table-card {
-    padding: 10px 10px 12px 10px;
+  .table-page-header {
+    gap: 10px;
   }
 
   .table-page-title {
-    font-size: 16px;
+    font-size: clamp(16px, 2.2vw, 18px);
   }
 
   .table-page-subtitle {
+    font-size: clamp(12px, 1.8vw, 13px);
+  }
+
+  /* Toolbar más flexible */
+  .table-toolbar {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .table-toolbar-left,
+  .table-toolbar-right {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .table-search-wrapper {
+    min-width: 200px;
+    flex: 1 1 260px;
+  }
+
+  /* En tablet mantenemos tabla con scroll si hay muchas columnas */
+  .table {
+    min-width: 720px;
+  }
+}
+
+
+/* ---------- MOBILE (hasta ~640px) => TABLA A CARDS ---------- */
+@media (max-width: 640px) {
+  /* Header apilado */
+  .table-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-page-header-left {
+    width: 100%;
+  }
+
+  .table-page-header-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  /* Toolbar apilada */
+  .table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .table-toolbar-left,
+  .table-toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .table-search-wrapper {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Pasamos a modo cards: sacamos el scroll */
+  .table-wrapper {
+    overflow: visible;
+  }
+
+  /* Table -> “cards” */
+  .table {
+    min-width: 0;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .table thead {
+    display: none; /* ocultamos encabezado */
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Cada fila como una card */
+  .table tbody tr {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+
+  /* Evita “zebra” en cards */
+  .table tbody tr:nth-child(even) {
+    background: var(--bg-card);
+  }
+
+  /* Cada celda como fila “label : value” */
+  .table td {
+    border: 0;
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  /* Label viene de data-label */
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
     font-size: 12px;
+    color: var(--text-gray);
+    flex: 0 0 45%;
+  }
+
+  /* Valor */
+  .table td {
+    font-size: 13px;
+    color: var(--text-dark);
+  }
+
+  /* Acciones más cómodas al final */
+  .table td.table-actions {
+    padding-top: 10px;
+  }
+
+  .table td.table-actions::before {
+    content: ""; /* sin label en acciones */
+  }
+
+  .table .table-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Botones un toque más “tocables” */
+  .table .btn-table {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  /* Paginación apilada */
+  .table-pagination {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }
