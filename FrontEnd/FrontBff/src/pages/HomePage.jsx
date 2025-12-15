@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   getUserInfo,
   getSaldoCliente,
-  getClientesVendedor
-} from "../api/Services"; // mismo servicio que usabas en el BFF
-import "../styles/Generales/pages.css"; // mismo CSS que el Home viejo
-import "../styles/Generales/Table.css"; 
+  getClientesVendedor,
+} from "../api/Services";
+
+import DataTable from "../components/DataTable";
+
+import "../styles/Generales/pages.css";
+import "../styles/Generales/Table.css";
+
 function HomePage() {
   const navigate = useNavigate();
 
@@ -18,10 +22,54 @@ function HomePage() {
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const columnsClientes = useMemo(
+    () => [
+      {
+        id: "dni",
+        header: "DNI",
+        accessorFn: (row) => row.dni ?? row.DNI ?? "",
+        cell: (info) => info.getValue(),
+      },
+      {
+        id: "nombre",
+        header: "Nombre",
+        accessorFn: (row) => row.nombre ?? row.Nombre ?? "",
+        cell: (info) => info.getValue(),
+      },
+      {
+        id: "saldo",
+        header: "Saldo",
+        accessorFn: (row) => row.saldo ?? row.Saldo ?? 0,
+        cell: (info) => `$${Number(info.getValue() ?? 0).toFixed(2)}`,
+        meta: { className: "text-right" },
+      },
+      {
+        id: "accion",
+        header: "Acción",
+        cell: ({ row }) => {
+          const original = row.original;
+          const dni = original.dni ?? original.DNI;
+
+          return (
+            <div className="table-actions text-center">
+              <button
+                className="btn-table btn-table-primary"
+                onClick={() => navigate(`/pedidos/${dni}`)}
+              >
+                Ver pedidos
+              </button>
+            </div>
+          );
+        },
+        meta: { className: "text-center" },
+      },
+    ],
+    [navigate]
+  );
+
   useEffect(() => {
     async function cargar() {
       try {
-        // Traemos info del usuario desde el BFF (cookie de sesión)
         const data = await getUserInfo();
         setUser(data);
 
@@ -44,11 +92,10 @@ function HomePage() {
         // VENDEDOR (ROL 1)
         if (data.rol === 1) {
           const lista = await getClientesVendedor();
-          setClientes(lista);
+          setClientes(Array.isArray(lista) ? lista : []);
         }
       } catch (err) {
         console.error("Error cargando Home:", err);
-        // Si no hay sesión/cookie → volvemos al login
         navigate("/", { replace: true });
       } finally {
         setLoading(false);
@@ -113,67 +160,35 @@ function HomePage() {
   // ============================
   // VENDEDOR (rol 1)
   // ============================
-  // ============================
-// VENDEDOR (rol 1)
-// ============================
-return (
-  <div>
-    <section className="section1">
-      <h2>
-        Bienvenido,{" "}
-        <span className="cliente-nombre">{user.username}</span>
-      </h2>
-      <p className="saldo-detalle">
-        Aquí podés ver el listado de tus clientes y acceder a sus pedidos.
-      </p>
-    </section>
+  return (
+    <div>
+      <section className="section1">
+        <h2>
+          Bienvenido,{" "}
+          <span className="cliente-nombre">{user.username}</span>
+        </h2>
+        <p className="saldo-detalle">
+          Aquí podés ver el listado de tus clientes y acceder a sus pedidos.
+        </p>
+      </section>
 
-    <section className="section2">
-      <h1>Clientes asignados</h1>
+      <section className="section2">
+        <h1>Clientes asignados</h1>
 
-      {clientes.length === 0 ? (
-        <p>No tienes clientes asignados.</p>
-      ) : (
-        // 👉 CARD de tabla reutilizando Table.css
-        <div className="table-card">
-          <div className="table-wrapper">
-            <table className="table clientes-table">
-              <thead>
-                <tr>
-                  <th>DNI</th>
-                  <th>Nombre</th>
-                  <th className="text-right">Saldo</th>
-                  <th className="text-center">Acción</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {clientes.map((c) => (
-                  <tr key={c.dni}>
-                    <td>{c.dni}</td>
-                    <td>{c.nombre}</td>
-                    <td className="text-right">
-                      ${Number(c.saldo ?? 0).toFixed(2)}
-                    </td>
-                    <td className="table-actions text-center">
-                      <button
-                        className="btn-table btn-table-primary"
-                        onClick={() => navigate(`/pedidos/${c.dni}`)}
-                      >
-                        Ver pedidos
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-    </section>
-  </div>
-);
-
+        {clientes.length === 0 ? (
+          <p>No tienes clientes asignados.</p>
+        ) : (
+          <DataTable
+            data={clientes}
+            columns={columnsClientes}
+            pageSizeDefault={10}
+            searchPlaceholder="Buscar cliente (DNI, nombre, saldo)..."
+          />
+        )}
+      </section>
+    </div>
+  );
 }
 
 export default HomePage;
+

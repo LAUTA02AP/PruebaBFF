@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -7,9 +7,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-/**
- * DataTable (headless) -> mantiene tu HTML/CSS (table, toolbar, etc.)
- */
 import "../styles/Generales/Table.css";
 
 export default function DataTable({
@@ -17,7 +14,7 @@ export default function DataTable({
   columns,
   pageSizeDefault = 10,
   searchPlaceholder = "Buscar...",
-  renderToolbarRight = null, // slot para BotonDescargar u otros
+  renderToolbarRight = null,
   className = "",
 }) {
   const [globalFilter, setGlobalFilter] = useState("");
@@ -26,7 +23,7 @@ export default function DataTable({
     pageSize: pageSizeDefault,
   });
 
-  // Tu búsqueda actual (ID/fecha/total), aplicada de forma global
+  // Búsqueda global (por defecto: Id/Fecha/Total) — podés extenderla cuando quieras
   const globalFilterFn = (row, _columnIds, filterValue) => {
     const term = String(filterValue ?? "").toLowerCase().trim();
     if (!term) return true;
@@ -101,15 +98,14 @@ export default function DataTable({
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
-                      const thClass = header.column.columnDef?.meta?.className || "";
+                      const def = header.column.columnDef;
+                      const thClass = def?.meta?.className || "";
+
                       return (
                         <th key={header.id} className={thClass}>
                           {header.isPlaceholder
                             ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+                            : flexRender(def.header, header.getContext())}
                         </th>
                       );
                     })}
@@ -121,10 +117,20 @@ export default function DataTable({
                 {pageRows.map((row) => (
                   <tr key={row.id}>
                     {row.getVisibleCells().map((cell) => {
-                      const tdClass = cell.column.columnDef?.meta?.className || "";
+                      const def = cell.column.columnDef;
+                      const tdClass = def?.meta?.className || "";
+
+                      const label =
+                        def?.meta?.label ??
+                        (typeof def?.header === "string" ? def.header : "");
+
                       return (
-                        <td key={cell.id} className={tdClass}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        <td
+                          key={cell.id}
+                          className={tdClass}
+                          data-label={label}
+                        >
+                          {flexRender(def.cell, cell.getContext())}
                         </td>
                       );
                     })}

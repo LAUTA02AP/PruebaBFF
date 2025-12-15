@@ -59,6 +59,7 @@ function Sidebar() {
     <>
       {/* Botón hamburguesa para móvil */}
       <button
+      type="button"
         className="mobile-menu-btn"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
       >
@@ -118,7 +119,7 @@ function Sidebar() {
                     onClick={(e) => e.preventDefault()}
                     type="button"
                   >
-                    📊 Historial (próximamente)
+                    Historial (desarrollo)
                   </button>
                 </li>
 
