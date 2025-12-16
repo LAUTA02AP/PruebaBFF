@@ -129,8 +129,9 @@ export default function DataTable({
                           key={cell.id}
                           className={tdClass}
                           data-label={label}
-                        >
+                        ><div className="table-cell-value">
                           {flexRender(def.cell, cell.getContext())}
+                          </div>
                         </td>
                       );
                     })}

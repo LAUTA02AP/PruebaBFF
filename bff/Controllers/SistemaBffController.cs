@@ -195,6 +195,29 @@ namespace Bff.Controllers
             return await Passthrough(apiResponse);
         }
 
+
+
+
+        [HttpPut("pedidos/{idPedido}")]
+        public async Task<IActionResult> UpdatePedido(int idPedido, [FromBody] object body)
+        {
+            var session = GetSession();
+            if (session == null) return Unauthorized();
+
+            // ✅ solo vendedor
+            if (session.Rol != 1) return Forbid();
+
+            if (session.IdVendedor == null) return Forbid();
+
+            var client = CreateClient(session);
+
+            // pasamos idVendedor para que la API real valide pertenencia
+            var url = $"/sistema/pedidos/{idPedido}?idVendedor={session.IdVendedor.Value}";
+
+            var apiResponse = await client.PutAsJsonAsync(url, body);
+            return await Passthrough(apiResponse);
+        }
+
     }
 }
 

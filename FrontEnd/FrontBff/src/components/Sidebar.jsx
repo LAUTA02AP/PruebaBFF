@@ -86,7 +86,7 @@ function Sidebar() {
                     }`}
                     onClick={() => setIsMobileOpen(false)}
                   >
-                    🏠 Inicio
+                  Inicio
                   </NavLink>
                 </li>
 
@@ -109,7 +109,7 @@ function Sidebar() {
                     }`}
                     onClick={() => setIsMobileOpen(false)}
                   >
-                    📋 Pedidos
+                    Pedidos
                   </NavLink>
                 </li>
 
@@ -129,7 +129,7 @@ function Sidebar() {
                     onClick={(e) => e.preventDefault()}
                     type="button"
                   >
-                    💳 Pagar (próximamente)
+                     Pagar (próximamente)
                   </button>
                 </li>
               </>
@@ -146,7 +146,7 @@ function Sidebar() {
                     }`}
                     onClick={() => setIsMobileOpen(false)}
                   >
-                    🏠 Inicio
+                    Inicio
                   </NavLink>
                 </li>
 
@@ -156,7 +156,7 @@ function Sidebar() {
                     onClick={(e) => e.preventDefault()}
                     type="button"
                   >
-                    👥 Clientes (próximamente)
+                    Clientes (próximamente)
                   </button>
                 </li>
 
@@ -166,7 +166,7 @@ function Sidebar() {
                     onClick={(e) => e.preventDefault()}
                     type="button"
                   >
-                    📋 Pedidos clientes
+                  Pedidos clientes
                   </button>
                 </li>
 
@@ -176,7 +176,7 @@ function Sidebar() {
                     onClick={(e) => e.preventDefault()}
                     type="button"
                   >
-                    📊 Estadísticas (próximamente)
+                    Estadísticas (próximamente)
                   </button>
                 </li>
               </>

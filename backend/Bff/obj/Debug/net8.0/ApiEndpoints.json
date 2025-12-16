@@ -96,6 +96,32 @@
   },
   {
     "ContainingType": "WebApplication1.Controllers.SistemaController",
+    "Method": "UpdatePedido",
+    "RelativePath": "sistema/pedidos/{idPedido}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPedido",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idVendedor",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "body",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApplication1.Controllers.SistemaController",
     "Method": "GetProductos",
     "RelativePath": "sistema/productos",
     "HttpMethod": "GET",

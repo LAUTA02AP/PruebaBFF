@@ -85,6 +85,27 @@
   },
   {
     "ContainingType": "Bff.Controllers.BffSistemaController",
+    "Method": "UpdatePedido",
+    "RelativePath": "bff/sistema/pedidos/{idPedido}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPedido",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "body",
+        "Type": "System.Object",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Bff.Controllers.BffSistemaController",
     "Method": "GetProductos",
     "RelativePath": "bff/sistema/productos",
     "HttpMethod": "GET",

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using WebApplication1.Data;
 
 namespace WebApplication1.Controllers
@@ -237,6 +238,86 @@ namespace WebApplication1.Controllers
                 return StatusCode(500, new { error = ex.Message });
             }
         }
+
+
+
+
+
+
+        [HttpPut("pedidos/{idPedido}")]
+        public async Task<IActionResult> UpdatePedido(
+        int idPedido,
+        int idVendedor,
+        [FromBody] JsonElement body)
+            {
+            try
+            {
+                // Aceptamos "Fecha"/"fecha" y "Total"/"total"
+                DateTime? fecha = null;
+                decimal? total = null;
+
+                // Fecha
+                if (body.TryGetProperty("Fecha", out var f1) || body.TryGetProperty("fecha", out f1))
+                {
+                    // Puede venir "2025-12-16" o ISO completo
+                    if (f1.ValueKind == JsonValueKind.String &&
+                        DateTime.TryParse(f1.GetString(), out var parsedFecha))
+                    {
+                        fecha = parsedFecha;
+                    }
+                }
+
+                // Total
+                if (body.TryGetProperty("Total", out var t1) || body.TryGetProperty("total", out t1))
+                {
+                    if (t1.ValueKind == JsonValueKind.Number && t1.TryGetDecimal(out var parsedTotal))
+                    {
+                        total = parsedTotal;
+                    }
+                    else if (t1.ValueKind == JsonValueKind.String &&
+                             decimal.TryParse(t1.GetString(), out parsedTotal))
+                    {
+                        total = parsedTotal;
+                    }
+                }
+
+                // (Opcional) si no mandan nada válido, cortamos
+                if (!fecha.HasValue && !total.HasValue)
+                    return BadRequest("No hay campos válidos para actualizar (Fecha/Total).");
+
+                // 🔒 Seguridad: solo actualiza si el pedido pertenece a un cliente del vendedor
+                var sqlUpdate = @"
+                UPDATE p
+                SET
+                  Fecha = COALESCE(@fecha, p.Fecha),
+                  Total = COALESCE(@total, p.Total)
+                FROM Pedidos p
+                INNER JOIN Clientes c ON c.DNI = p.DNI
+                WHERE p.Id = @idPedido
+                  AND c.IdVendedor = @idVendedor;
+                ";
+
+                var rows = await _db.ExecuteAsync(sqlUpdate, new { idPedido, idVendedor, fecha, total });
+
+                if (rows == 0)
+                    return NotFound("Pedido no encontrado o no pertenece a tu cartera.");
+
+                // Devolver el pedido actualizado (útil para el front)
+                                var sqlSelect = @"
+                SELECT p.Id, p.Fecha, p.Total, p.DNI, p.Usuario
+                FROM Pedidos p
+                WHERE p.Id = @idPedido;
+                ";
+                var pedido = await _db.QuerySingleAsync<dynamic>(sqlSelect, new { idPedido });
+
+                return Ok(pedido);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
 
 
     }

@@ -78,3 +78,11 @@ export const getProductos = async () => {
   const res = await API.get("/sistema/productos");
   return res.data; // array de productos
 };
+
+
+//""""""""""""PUT"""""""""""""""""
+
+export const updatePedido = async (idPedido, payload) => {
+  const res = await API.put(`/sistema/pedidos/${Number(idPedido)}`, payload);
+  return res.data;
+};
